@@ -11,7 +11,9 @@ terraform apply
 
 ## Destroy
 
-```terraform destroy```
+```
+terraform destroy
+```
 
 ## Passwords
 
