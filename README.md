@@ -4,18 +4,22 @@ Creates multiple IAM users w/ Cloud9 development environments for interns, works
 
 ## Create
 
+```
 terraform plan
 terraform apply
+```
 
 ## Destroy
 
-terraform destroy
+```terraform destroy```
 
 ## Passwords
 
 terraform encrypts passwords with gpg or keystore by default. Output decrypted passwords with the following command:
 
+```
 terraform output passwords |  while read line ; do echo $line | base64 -D | keybase pgp decrypt; echo ; done
+```
 
 ## Notes
 
