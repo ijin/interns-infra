@@ -1,6 +1,7 @@
-variable "account_id" {}
-variable "num_accounts" { }
-variable "keybase_id" { default = "ijin" }
+variable "account_id"   {}
+variable "num_accounts" {}
+variable "auto_stop"    { default = 30 }
+variable "keybase_id"   { default = "ijin" }
 
 # IAM users
 resource "aws_iam_user" "intern" {
@@ -42,7 +43,7 @@ resource "aws_cloud9_environment_ec2" "intern" {
   instance_type = "t2.micro"
   name = "intern-env-${count.index}"
   description = "Interns environment (${count.index}))"
-  automatic_stop_time_minutes = 30
+  automatic_stop_time_minutes = "${var.auto_stop}"
   owner_arn = "arn:aws:iam::${var.account_id}:user/intern-${count.index}"
   depends_on = ["aws_iam_user.intern"]
 }
