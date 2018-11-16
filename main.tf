@@ -1,5 +1,6 @@
 variable "account_id" {}
 variable "num_accounts" { }
+variable "keybase_id" { default = "ijin" }
 
 # IAM users
 resource "aws_iam_user" "intern" {
@@ -11,26 +12,26 @@ resource "aws_iam_user" "intern" {
 resource "aws_iam_user_login_profile" "intern" {
   count = "${var.num_accounts}"
   user    = "${element(aws_iam_user.intern.*.name, count.index)}"
-  pgp_key = "keybase:ijin"
+  pgp_key = "keybase:${var.keybase_id}"
   password_reset_required = false
   password_length = 10
 }
 
-resource "aws_iam_group" "interns" {
+resource "aws_iam_group" "group" {
   name = "interns"
   path = "/users/"
 }
 
-resource "aws_iam_group_policy_attachment" "interns-c9" {
-  group      = "${aws_iam_group.interns.name}"
+resource "aws_iam_group_policy_attachment" "c9" {
+  group      = "${aws_iam_group.group.name}"
   policy_arn = "arn:aws:iam::aws:policy/AWSCloud9EnvironmentMember"
 }
 
-resource "aws_iam_group_membership" "interns" {
+resource "aws_iam_group_membership" "group" {
   name = "interns"
 
   users = ["${aws_iam_user.intern.*.name}"]
-  group = "${aws_iam_group.interns.name}"
+  group = "${aws_iam_group.group.name}"
 }
 
 
@@ -40,8 +41,10 @@ resource "aws_cloud9_environment_ec2" "intern" {
   provider = "aws.west"
   instance_type = "t2.micro"
   name = "intern-env-${count.index}"
-  description = "Seattle Consulting intern environment (${count.index}))"
-  owner_arn = "${element(aws_iam_user.intern.*.arn, count.index)}"
+  description = "Interns environment (${count.index}))"
+  automatic_stop_time_minutes = 30
+  owner_arn = "arn:aws:iam::${var.account_id}:user/intern-${count.index}"
+  depends_on = ["aws_iam_user.intern"]
 }
 
 output "passwords" {
