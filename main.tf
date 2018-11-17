@@ -1,7 +1,8 @@
-variable "account_id"   {}
-variable "num_accounts" {}
-variable "auto_stop"    { default = 30 }
-variable "pgp"          { default = "keybase:ijin" }
+variable "account_id"    {}
+variable "num_accounts"  {}
+variable "auto_stop"     { default = 30 }
+variable "pgp"           { default = "keybase:ijin" }
+variable "instance_type" { default = "t2.micro" }
 
 # IAM users
 resource "aws_iam_user" "intern" {
@@ -40,7 +41,7 @@ resource "aws_iam_group_membership" "group" {
 resource "aws_cloud9_environment_ec2" "intern" {
   count = "${var.num_accounts}"
   provider = "aws.west"
-  instance_type = "t2.micro"
+  instance_type = "${var.instance_type}"
   name = "intern-env-${count.index}"
   description = "Interns environment (${count.index}))"
   automatic_stop_time_minutes = "${var.auto_stop}"
