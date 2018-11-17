@@ -34,13 +34,14 @@ set `gpg` variable
 
 Output decrypted passwords with the following command:
 
-if using keybase:
+### if using keybase
 ```
 terraform output passwords |  while read line ; do echo $line | base64 -D | keybase pgp decrypt; echo ; done
 ```
-if using gpg:
+### if using gpg
 ```
 terraform output passwords |  while read line ; do echo $line | base64 -D | gpg -d -q; echo ; done
+```
 
 ## Notes
 
