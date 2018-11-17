@@ -1,7 +1,7 @@
 variable "account_id"   {}
 variable "num_accounts" {}
 variable "auto_stop"    { default = 30 }
-variable "keybase_id"   { default = "ijin" }
+variable "pgp"          { default = "keybase:ijin" }
 
 # IAM users
 resource "aws_iam_user" "intern" {
@@ -13,7 +13,7 @@ resource "aws_iam_user" "intern" {
 resource "aws_iam_user_login_profile" "intern" {
   count = "${var.num_accounts}"
   user    = "${element(aws_iam_user.intern.*.name, count.index)}"
-  pgp_key = "keybase:${var.keybase_id}"
+  pgp_key = "${var.pgp}"
   password_reset_required = false
   password_length = 10
 }

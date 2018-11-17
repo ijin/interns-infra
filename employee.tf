@@ -5,7 +5,7 @@ resource "aws_iam_user" "instructor" {
 
 resource "aws_iam_user_login_profile" "instructor" {
   user    = "${aws_iam_user.instructor.name}"
-  pgp_key = "keybase:${var.keybase_id}"
+  pgp_key = "${var.pgp}"
   password_reset_required = false
   password_length = 10
 }
