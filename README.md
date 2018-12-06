@@ -7,9 +7,9 @@ Creates multiple IAM users w/ Cloud9 development environments for interns, works
 terraform.tfvars
 
 ```HCL
-account = MY_AWS_ACCOUNT_ID
+account_id = "MY_AWS_ACCOUNT_ID"
 num_accounts = NUMBER_OF_ACCOUNTS
-pgp = KEYBASE_OR_GPG_KEY
+pgp = "KEYBASE_OR_GPG_KEY"
 ```
 
 ## Create
